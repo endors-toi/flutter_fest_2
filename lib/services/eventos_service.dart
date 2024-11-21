@@ -25,11 +25,12 @@ class EventosService {
     // se debe construir el request manualmente.
     // para esto se utiliza http.MultipartRequest()
 
-    // iniciar objeto Request con sus headers
+    // iniciar objeto Request ('METODO', Uri) con sus headers
     final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/eventos'));
     request.headers.addAll({'Accept': 'application/json', 'Content-Type': 'application/json'});
 
-    // agregar campos (se revisa si son nulos cuando los campos son opcionales)
+    // agregar campos al Request
+    // (se revisa si lo recibido es nulo cuando los campos son opcionales)
     request.fields['nombre'] = nombre;
     if (descripcion != null) request.fields['descripcion'] = descripcion;
 
@@ -45,7 +46,7 @@ class EventosService {
     if (response.statusCode == 201) {
       return Evento.fromJson(jsonDecode(response.body));
     } else {
-      // esto mostrará el mensaje de error directo desde la API a la pantalla gracias a FutureBuilder
+      // EXTRA: esto mostrará el mensaje de error directo desde la API a la pantalla gracias a FutureBuilder
       throw Exception(jsonDecode(response.body)['message']);
     }
   }

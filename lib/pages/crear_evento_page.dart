@@ -34,15 +34,15 @@ class _CrearEventoPageState extends State<CrearEventoPage> {
 
   Future<void> _saveEvento() async {
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+      _formKey.currentState!.save(); // EXTRA: este método ejecuta todos los "onSaved" de los campos del formulario
       try {
         await widget.service.createEvento(_nombre, _descripcion, _foto);
         if (mounted) Navigator.pop(context);
       } catch (e) {
         if (mounted) {
-        // ^^^^^^^^ EXTRA: siempre que uno se refiere al "context" en un espacio asíncrono (async),
-        // se debe verificar si el widget existe (está "mounted") para evitar errores de nula referencia.
-        // Esto porque si se resuelve el "await" -después- de que el widget se destruye, el "context" ya no existe
+          // ^^^^^^ EXTRA: siempre que uno se refiere al "context" en un espacio asíncrono (async),
+          // se debe verificar si el widget existe (está "mounted") para evitar errores de nula referencia.
+          // Esto porque si se resuelve el "await" -después- de que el widget se destruye, el "context" ya no existe
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error: $e')),
           );
@@ -69,6 +69,13 @@ class _CrearEventoPageState extends State<CrearEventoPage> {
                     ? 'Este campo es requerido'
                     : null,
                 onSaved: (value) => _nombre = value!,
+                // EXTRA: onSaved es una manera alternativa de guardar los datos de un formulario.
+                // en lugar de usar controllers, se crea este evento con una función que se ejecuta
+                // cuando el formulario asociado es guardado.
+
+                // en este FormField en específico,
+                // cuando se hace _formKey.currentState!.save()
+                // se asignará el "value" a la variable "_nombre"
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Descripción'),

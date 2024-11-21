@@ -56,6 +56,8 @@ class _DashboardPageState extends State<DashboardPage> {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: _navigateToCreate,
+                       // EXTRA: es buena práctica mantener las -implementaciones- de métodos separados del "Widget build()",
+                       //        así en el archivo se tiene una sección con la "lógica" y otra con la "presentación"
           ),
         ],
       ),
@@ -79,6 +81,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       // consumir imagen desde API
                       ? Image.network(evento.foto!,
                           width: 50, height: 50, fit: BoxFit.cover)
+                      // si no hay imagen, mostrar icono por defecto
                       : Icon(Icons.event),
                   title: Text(evento.nombre),
                   subtitle: Text(evento.descripcion ?? 'Sin descripción'),
